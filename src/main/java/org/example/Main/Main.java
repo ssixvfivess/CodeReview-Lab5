@@ -1,6 +1,13 @@
-package org.example.Classes;
+package org.example.Main;
 
-import org.example.Interfaces.FractionOperations;
+import org.example.Fraction.Fraction1;
+import org.example.Fraction.Fraction2;
+import org.example.Fraction.Fraction3;
+import org.example.Fraction.Fraction4;
+import org.example.Fraction.Interfaces.FractionOperations;
+import org.example.Name.Name;
+import org.example.Secret.Secret;
+
 import java.util.Scanner;
 
 

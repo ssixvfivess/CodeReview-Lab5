@@ -1,6 +1,6 @@
-package org.example.Classes;
+package org.example.Fraction;
 
-import org.example.Interfaces.FractionOperations;
+import org.example.Fraction.Interfaces.FractionOperations;
 
 import java.io.Serializable;
 import java.util.Objects;

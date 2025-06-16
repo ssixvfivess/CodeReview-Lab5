@@ -1,4 +1,4 @@
-package org.example.Interfaces;
+package org.example.Fraction.Interfaces;
 
 
 /**
