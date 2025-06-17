@@ -1,28 +1,48 @@
-package org.example.Main;
+package ru.vyatkina.Main;
 
-import org.example.Fraction.Fraction1;
-import org.example.Fraction.Fraction2;
-import org.example.Fraction.Fraction3;
-import org.example.Fraction.Fraction4;
-import org.example.Fraction.Interfaces.FractionOperations;
-import org.example.Name.Name;
-import org.example.Secret.Secret;
+import ru.vyatkina.Fraction.*;
+import ru.vyatkina.Fraction.Interfaces.FractionOperations;
+import ru.vyatkina.Name.Name;
+import ru.vyatkina.Secret.Secret;
 
 import java.util.Scanner;
+
+import static java.lang.Integer.parseInt;
+import static java.lang.Math.pow;
 
 
 /**
  * Главный класс приложения, предоставляющий пользовательский интерфейс для работы с различными функциями.
+ * Включает операции с дробями, работу с именами, секретами и математические вычисления.
  */
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
 
     /**
      * Точка входа в приложение.
-     * @param args аргументы командной строки (не используются)
+     * @param args аргументы командной строки (используются для возведения в степень)
      */
     public static void main(String[] args) {
+        if (args.length == 2) {
+            try {
+                // Преобразуем строковые аргументы в Integer
+                Integer x = Integer.parseInt(args[0]);
+                Integer y = Integer.parseInt(args[1]);
+                System.out.println("Результат возведения в степень: " + power(x, y));
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: неверный формат чисел в аргументах командной строки");
+            }
+        }
         runApplication();
+    }
+
+    /**
+     * Возводит число X в степень Y.
+     * @return результат возведения X в степень Y
+     * @throws NumberFormatException если строки не содержат валидные числа
+     */
+    public static double power(Integer x, Integer y) throws NumberFormatException {
+        return pow(x, y);
     }
 
     /**
@@ -31,7 +51,7 @@ public class Main {
     private static void runApplication() {
         while (true) {
             displayMenu();
-            int choice = getIntInput("Введите число от 0 до 7: ", 0, 7);
+            int choice = getIntInput("Введите число от 0 до 9: ", 0, 9);
 
             if (choice == 0) {
                 System.out.println("Выход из программы.");
@@ -46,15 +66,17 @@ public class Main {
      * Отображает главное меню приложения.
      */
     private static void displayMenu() {
-        System.out.println("Выберите действие:");
+        System.out.println("\nВыберите действие:");
         System.out.println("0. Выход");
-        System.out.println("1. Работа с дробями 1 ");
-        System.out.println("2. Работа с дробями 2 ");
-        System.out.println("3. Работа с дробями 3" );
+        System.out.println("1. Работа с дробями 1");
+        System.out.println("2. Работа с дробями 2");
+        System.out.println("3. Работа с дробями 3");
         System.out.println("4. Работа с дробями 4");
-        System.out.println("5. Создать имена (расширенная)");
-        System.out.println("6. Создать секрет");
-        System.out.println("7. Решение готовых уравнений");
+        System.out.println("5. Работа с дробями 5");
+        System.out.println("6. Создать имена (расширенная)");
+        System.out.println("7. Создать секрет");
+        System.out.println("8. Решение готовых уравнений");
+        System.out.println("9. Возведение в степень");
     }
 
     /**
@@ -67,10 +89,25 @@ public class Main {
             case 2 -> workWithFractions(FractionType.TYPE2);
             case 3 -> workWithFractions(FractionType.TYPE3);
             case 4 -> workWithFractions(FractionType.TYPE4);
-            case 5 -> createNames();
-            case 6 -> createSecret();
-            case 7 -> performAdditions();
+            case 5 -> workWithFractions(FractionType.TYPE5);
+            case 6 -> createNames();
+            case 7 -> createSecret();
+            case 8 -> performAdditions();
+            case 9 -> performPowerOperation();
             default -> System.out.println("Неверный выбор. Попробуйте снова.");
+        }
+    }
+
+    /**
+     * Выполняет операцию возведения в степень с вводом от пользователя.
+     */
+    private static void performPowerOperation() {
+        try {
+            Integer xStr = getIntInput("Введите основание (X): ", 0, 9);
+            Integer yStr = getIntInput("Введите степень (Y): ",0, 9);
+            System.out.println("Результат: " + power(xStr, yStr));
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка: введите целые числа");
         }
     }
 
@@ -78,7 +115,7 @@ public class Main {
      * Перечисление типов дробей для унификации обработки.
      */
     private enum FractionType {
-        TYPE1, TYPE2, TYPE3, TYPE4
+        TYPE1, TYPE2, TYPE3, TYPE4, TYPE5
     }
 
     /**
@@ -116,6 +153,13 @@ public class Main {
                 performFractionOperations(f1, f2, f3);
                 displayFractionComparisons(f1, f2, f3);
             }
+            case TYPE5 -> {
+                Fraction5 f1 = (Fraction5) createFraction(type, "первой");
+                Fraction5 f2 = (Fraction5) createFraction(type, "второй");
+                Fraction5 f3 = (Fraction5) createFraction(type, "третьей");
+                performFractionOperations(f1, f2, f3);
+                displayFractionClone(f1);
+            }
         }
     }
 
@@ -134,6 +178,7 @@ public class Main {
             case TYPE2 -> new Fraction2(numerator, denominator);
             case TYPE3 -> new Fraction3(numerator, denominator);
             case TYPE4 -> new Fraction4(numerator, denominator);
+            case TYPE5 -> new Fraction5(numerator, denominator);
         };
     }
 
@@ -173,10 +218,25 @@ public class Main {
     private static void displayFractionComparisons(Fraction4 f1, Fraction4 f2, Fraction4 f3) {
         System.out.println("f1.equals(f2): " + f1.equals(f2));
         System.out.println("f1.equals(f3): " + f1.equals(f3));
-
         System.out.println("f1.hashCode(): " + f1.hashCode());
         System.out.println("f2.hashCode(): " + f2.hashCode());
         System.out.println("f3.hashCode(): " + f3.hashCode());
+    }
+
+    /**
+     * Демонстрирует работу клонирования для Fraction5.
+     * @param fraction дробь для клонирования
+     */
+    private static void displayFractionClone(Fraction5 fraction) {
+        try {
+            Fraction5 clone = fraction.clone();
+            System.out.println("Оригинал: " + fraction);
+            System.out.println("Клон: " + clone);
+            System.out.println("Это один и тот же объект? " + (fraction == clone));
+            System.out.println("Дроби равны? " + fraction.equals(clone));
+        } catch (CloneNotSupportedException e) {
+            System.out.println("Ошибка при клонировании: " + e.getMessage());
+        }
     }
 
     /**
@@ -313,13 +373,12 @@ public class Main {
      * @return введенное пользователем число
      */
     private static int getIntInput(String prompt, int min, int max) {
-        Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.print(prompt);
             String input = scanner.nextLine().trim();
 
             try {
-                int value = Integer.parseInt(input);
+                int value = parseInt(input);
                 if (value >= min && value <= max) {
                     return value;
                 }
@@ -331,31 +390,27 @@ public class Main {
     }
 
     /**
-     * Получает строковый ввод от пользователя с проверкой
+     * Получает строковый ввод от пользователя с проверкой.
      * @param prompt приглашение для ввода
      * @return введенную строку (только буквы, длина 2-15 символов)
      */
     private static String getStringInput(String prompt) {
-        Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.print(prompt);
             String input = scanner.nextLine().trim();
 
-            // Проверка на пустую строку
             if (input.isEmpty()) {
                 System.out.println("Ошибка: Ввод не может быть пустым. Попробуйте снова.");
                 continue;
             }
 
-            // Проверка, что строка содержит только буквы (включая кириллицу)
-            if (!input.matches("[a-zA-Zа-яА-ЯёЁ\\s]+")) {
-                System.out.println("Ошибка: Введите только буквы (без цифр и символов). Попробуйте снова.");
+            if (!input.matches("[a-zA-Zа-яА-ЯёЁ\\s-]+")) {
+                System.out.println("Ошибка: Введите только буквы и дефисы. Попробуйте снова.");
                 continue;
             }
 
-            // Проверка длины строки
             if (input.length() < 2 || input.length() > 15) {
-                System.out.println("Ошибка: Слово должно быть от 2 до 15 символов. Попробуйте снова.");
+                System.out.println("Ошибка: Должно быть от 2 до 15 символов. Попробуйте снова.");
                 continue;
             }
 

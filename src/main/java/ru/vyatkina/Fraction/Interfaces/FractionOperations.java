@@ -1,4 +1,4 @@
-package org.example.Fraction.Interfaces;
+package ru.vyatkina.Fraction.Interfaces;
 
 
 /**

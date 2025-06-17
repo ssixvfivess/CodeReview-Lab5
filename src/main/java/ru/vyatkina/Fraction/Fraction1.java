@@ -1,8 +1,10 @@
-package org.example.Fraction;
+package ru.vyatkina.Fraction;
 
-import org.example.Fraction.Interfaces.FractionOperations;
+import ru.vyatkina.Fraction.Interfaces.FractionOperations;
+
 
 /**
+ * 1.4 Задание:
  * Класс для работы с дробями, поддерживающий основные арифметические операции.
  * Дробь хранится в несократимом виде с положительным знаменателем.
  */
@@ -46,7 +48,7 @@ public class Fraction1 implements FractionOperations<Fraction1> {
             denominator = -denominator;
         }
 
-        int gcd = calculateGCD(Math.abs(numerator), Math.abs(denominator));
+        int gcd = calculateNOD(Math.abs(numerator), Math.abs(denominator));
         return new int[]{numerator / gcd, denominator / gcd};
     }
 
@@ -101,7 +103,7 @@ public class Fraction1 implements FractionOperations<Fraction1> {
      * @param b второе число
      * @return НОД(a, b)
      */
-    private int calculateGCD(int a, int b) {
+    private int calculateNOD(int a, int b) {
         while (b != 0) {
             int temp = b;
             b = a % b;
@@ -113,14 +115,5 @@ public class Fraction1 implements FractionOperations<Fraction1> {
     @Override
     public String toString() {
         return numerator + "/" + denominator;
-    }
-
-    // Геттеры для числителя и знаменателя (опционально)
-    public int getNumerator() {
-        return numerator;
-    }
-
-    public int getDenominator() {
-        return denominator;
     }
 }
